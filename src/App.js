@@ -29,6 +29,7 @@ import React from "react";
 import Main from "./components/Main";
 import Corona from "./components/Corona";
 import Header from "./components/Header";
+import Inductance from "./components/Inductance";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 // import UserProvider from './components/UserProvider.jsx';
 
@@ -41,6 +42,7 @@ function App() {
           {/* <Route path="sag" component={<Main />} /> */}
           <Route path="/sag" component={() => <Main />} />
           <Route path="/corona" component={() => <Corona />} />
+          <Route path="/Inductance" component={() => <Inductance />} />
           <Redirect to="/sag" from="/" />
         </Switch>
       </BrowserRouter>

@@ -1,0 +1,39 @@
+.header__navbar{
+    display: flex;
+}
+.header__navbar sup{
+    color: blue;
+} 
+.header__nav{
+  flex: 0.9;
+  justify-content: center ;
+}
+.header__nav h6{
+    color:darkblue;
+    font-size:large;
+    font-weight: bold;
+}
+.header__nav h6:hover{
+    color: #fff;
+}
+.nav__navitem{
+    text-transform: uppercase;
+    padding: 0px 10px;
+    margin: 0px 10px;
+}
+.nav__navitem:hover{
+    background-color:#5c60f2;
+    color: #fff !important;
+}
+.home{
+    padding: 30px;
+    background-color: #c3c6f7;
+    height: 300px;
+    color: blue;
+
+}
+.home  p{
+    padding: 40px;
+    font-size: large;
+    font-family: 'Secular One', sans-serif;
+}
