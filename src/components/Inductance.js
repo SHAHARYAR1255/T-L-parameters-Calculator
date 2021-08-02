@@ -1,16 +1,19 @@
 import React, { useState } from 'react'
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import { nthRoot, pow, sqrt } from 'mathjs';
 
 function Inductance() {
     const [isSubmit, setIsSubmit] = useState(false);
     const [inductance, setInductance] = useState(0);
     const [initialValues, setInitialValues] = useState({
-        circuit: "", conductor: "", noOfBunS: 0, distanceS: "", phaseAB: "", phaseBC: "",
-        phaseAC: "", radius: "", bundledS: "", bundledD: "", VerDisAB: "", VerDisBC: "", VerDisAC: "", distAC: "", distBB: "", distCA: "", noOfBunD: "", distanceD: ""
+        circuit: "", conductor: "", noOfBunS: 0, distanceS: 0, phaseAB: 0, phaseBC: 0,
+        phaseAC: 0, radius: 0, bundledS: "", bundledD: "", VerDisAB: 0, VerDisBC: 0, VerDisAC: 0,
+        distAC: 0, distBB: 0, distCA: 0, noOfBunD: 0, distanceD: 0
     });
 
     const handleSubmit = (e) => {
-        const { circuit, conductor, noOfBunD, noOfBunS, phaseAB, phaseAC, phaseBC, radius, bundledD, bundledS, distAC, distBB, distCA, distanceD, distanceS, VerDisAB, VerDisAC, VerDisBC } = initialValues;
+        const { circuit, conductor, noOfBunD, noOfBunS, phaseAB, phaseAC, phaseBC, radius, bundledD,
+            bundledS, distAC, distBB, distCA, distanceD, distanceS, VerDisAB, VerDisAC, VerDisBC } = initialValues;
         setIsSubmit(!isSubmit);
         e.preventDefault();
         let r;
@@ -25,81 +28,120 @@ function Inductance() {
                 r = 1.824 / 100;
                 break;
             case 'OTHER':
-                r = initialValues.radius;
+                r = radius;
+                break;
+            default:
                 break;
         };
         r = r * 0.7788;
-
+        console.log(r, 'r_')
         if (circuit === 'S') {
             if (bundledS === 'Y') {
-                let Ds ;
+                console.log('S and Y')
+                let Ds;
+                console.log(noOfBunS, 'no of bundled on S');
                 switch (noOfBunS) {
-                    case '2': Ds = Math.nthroot((Math.poow(r*distanceS, 2)), 4)
-                    case '3': Ds = Math.nthroot( r* Math.pow(distanceS, 2), 3)
-                    case '4': Ds = Math.nthroot(4 * (r *Math.pow(distanceS, 3)), 16)
-                    default : Ds = r 
-                 };
-                 const Deq= Math.nthroot(phaseAB*phaseBC*phaseAC, 3);
-            const L = (2E-7) * Math.log(Deq/Ds);
+                    case '2' : Ds = nthRoot((pow(r * distanceS, 2)), 4); break;
+                    case '3' : Ds = nthRoot(r * pow(distanceS, 2), 3); break;
+                    case '4' : Ds = nthRoot(4 * (r * pow(distanceS, 3)), 16); break;
+                    default: 
+                        console.log('default Ds');
+                        Ds = r
+                };
+                console.log(Ds, 'Ds')
+                const Deq = nthRoot(phaseAB * phaseBC * phaseAC, 3);
+                console.log(Deq, 'Deq')
+                const L = (2E-7) * Math.log(Deq / Ds);
+                setInductance(L);
             }
             else { setInductance("calculation not possible") }
 
-            
+
         };
 
-        if(circuit === 'D'){
-            if(bundledD === 'Y'){
+        if (circuit === 'D') {
+            if (bundledD === 'Y') {
+                let Dsa;
+
+                switch (noOfBunD) {
+                    case '2' : Dsa = sqrt(pow(r, 2)); break;
+                    case '3' : Dsa = nthRoot(r * (pow(distanceD, 2)), 3); break;
+                    case '4' : Dsa = 1.09 * nthRoot(r * (pow(distanceD, 3)), 4); break;
+                    default:
+                        Dsa = 1 ;
+                        break;
+                };
+                console.log(noOfBunD, 'Y', 'nofofBunD', Dsa, 'Dsa');
+                const Dsa1 = sqrt(Dsa * sqrt(pow(VerDisAC, 2) + pow(VerDisAC, 2)));
+                console.log(Dsa1, 'Dsa1')
+                const Dsa3 = Dsa1;
+                const Dsa2 = sqrt(Dsa * distBB);
+                console.log(Dsa2, 'Dsa2')
+                const Ds = nthRoot(Dsa1 * Dsa2 * Dsa3, 3);
+                console.log(Ds, 'Ds');
+                const dab = nthRoot((VerDisAB ** 2) * (sqrt((distAC ** 2) + (VerDisAB ** 2)) ** 2), 4);
+                const dbc = nthRoot((VerDisBC ** 2) * (sqrt((distBB ** 2) + (VerDisBC ** 2)) ** 2), 4);
+                const dac = nthRoot((VerDisAC ** 2) * (sqrt((distCA ** 2) + (VerDisAC ** 2)) ** 2), 4);
+                const Dm = nthRoot(dab * dbc * dac, 3);
+                console.log(Dm, 'Dm');
+                const L = (2E-7) * Math.log(Dm / Ds);
+                setInductance(L);
 
 
             }
-            else{
-                if(distAC == distBB && distBB == distCA){
-                    let Dsa = Math.sqrt(r* Math.sqrt(Math.pow(VerDisAC, 2)+ Math.pow(VerDisAC, 2)));
-                    const Dsc = Dsa ;
-                    const Dsb = Math.sqrt(r * distBB);
-                    const Ds = Math.nthroot(Dsa*Dsc*Dsb, 3);
-                    const dab = Math.sqrt(VerDisAB* Math.sqrt(Math.pow(VerDisAB, 2)+Math.pow(distBB, 2)))
-                    const dbc = dab ;
-                    const dac = Math.sqrt(VerDisAC*distCA);
-                    const Dm = Math.nthroot(dab*dbc*dac, 3);
-                    let L = (2E-7)* Math.log(Dm/Ds);
+            else {
+                if (distAC === distBB && distBB === distCA) {
+                    console.log('distAC === distBB && distBB === distCA')
+                    let Dsa = sqrt(r * sqrt(Math.pow(VerDisAC, 2) + Math.pow(VerDisAC, 2)));
+                    const Dsc = Dsa;
+                    const Dsb = sqrt(r * distBB);
+                    const Ds = nthRoot(Dsa * Dsc * Dsb, 3);
+                    const dab = sqrt(VerDisAB * sqrt(Math.pow(VerDisAB, 2) + Math.pow(distBB, 2)))
+                    const dbc = dab;
+                    const dac = sqrt(VerDisAC * distCA);
+                    const Dm = nthRoot(dab * dbc * dac, 3);
+                    console.log(Dm, 'Dm');
+                    let L = (2E-7) * Math.log(Dm / Ds);
                     setInductance(L);
                 }
-                else{
-                    const t = distCA - distAC ;
-                    const u = t /2 ;
-                    const v = distCA - u ;
-                    const h = Math.sqrt((v ** 2) + (VerDisAC ** 2));
-                    const Dsb = Math.sqrt(r * distBB);
-                    const Dsa= Math.sqrt(r* h);
+                else {
+                    console.log('not equat adj');
+                    const t = distCA - distAC;
+                    const u = t / 2;
+                    const v = distCA - u;
+                    const h = sqrt((v ** 2) + (VerDisAC ** 2));
+                    const Dsb = sqrt(r * distBB);
+                    const Dsa = sqrt(r * h);
                     const Dsc = Dsa;
-                    const Ds = Math.nthroot(Dsa*Dsb*Dsc, 3);
+                    const Ds = nthRoot(Dsa * Dsb * Dsc, 3);
                     const a = distBB - distAC;
-                    const b = distBB - (a/2)
+                    const b = distBB - (a / 2)
                     const m = distBB - distCA
-                    const n = m/2 ;
+                    const n = m / 2;
 
-                    // const hcb
+                    let hcb = sqrt((VerDisBC ** 2) + (n ** 2));
+                    let hcb_ = sqrt((VerDisBC ** 2) + Math.pow(distBB - n, 2));
+                    let hab = sqrt((VerDisAB ** 2) + Math.pow(a * 0.5, 2))
+                    let hab_ = sqrt((VerDisAB ** 2) + b ** 2)
+
+                    const hc_b = hab_;
+                    const hc_b_ = hab;
+                    const ha_b = hcb_;
+                    const ha_b_ = hcb;
+
+                    const dab = nthRoot(hab * hab_ * ha_b * ha_b_, 4);
+                    const hac = sqrt((u ** 2) + VerDisAC ** 2);
+                    const ha_c_ = hac;
+                    const dac = nthRoot(distAC * hac * distCA * ha_c_, 4);
+                    const dbc = nthRoot(hcb * hcb_ * hc_b * hc_b_, 4);
+                    const Dm = nthRoot(dac * dbc * dab, 3)
+                    console.log(Dm, 'Dm');
+                    const L = (2E-7) * Math.log(Dm / Ds);
+                    setInductance(L);
                 }
             }
-
-
-
         }
-
-
-
-
-
-
-
-
     };
-
-
-
-
-
 
     const handleChange = (e) => {
         setInitialValues({ ...initialValues, [e.target.name]: e.target.value });
@@ -149,24 +191,24 @@ function Inductance() {
                         {initialValues.bundledS === 'Y' ? (
                             <>
                                 <FormGroup>
-                                    <Label for="bundles">Number of Bundles</Label>
-                                    <Input type="number" name="bundles" id="bundles" placeholder="4" onChange={handleChange} />
+                                    <Label for="noOfBunS">Number of Bundles</Label>
+                                    <Input type="number" name="noOfBunS" id="noOfBunS" placeholder="e.g 3" onChange={handleChange} />
                                 </FormGroup>
                                 <FormGroup>
                                     <Label for="distance">Distance b/w the bundled conductors</Label>
-                                    <Input type="number" name="distance" id="distance" placeholder="" onChange={handleChange} />
+                                    <Input type="number" name="distance" id="distance" placeholder="in meters" onChange={handleChange} />
                                 </FormGroup>
                                 <FormGroup>
                                     <Label for="phaseAB">Enter distance b/w Phase A and B</Label>
-                                    <Input type="number" name="phaseAB" id="phaseAB" placeholder="" onChange={handleChange} />
+                                    <Input type="number" name="phaseAB" id="phaseAB" placeholder="in meters" onChange={handleChange} />
                                 </FormGroup>
                                 <FormGroup>
                                     <Label for="phaseBC">Enter distance b/w Phase B and C</Label>
-                                    <Input type="number" name="phaseBC" id="phaseBC" placeholder="" onChange={handleChange} />
+                                    <Input type="number" name="phaseBC" id="phaseBC" placeholder="in meters" onChange={handleChange} />
                                 </FormGroup>
                                 <FormGroup>
                                     <Label for="phaseAC">Enter distance b/w Phase A and C</Label>
-                                    <Input type="number" name="phaseAC" id="phaseAC" placeholder="" onChange={handleChange} />
+                                    <Input type="number" name="phaseAC" id="phaseAC" placeholder="in meters" onChange={handleChange} />
                                 </FormGroup>
                             </>
                         ) : (null)}
@@ -183,48 +225,52 @@ function Inductance() {
                         </FormGroup>
                         <FormGroup>
                             <Label for="verDisAB">Enter vertical distance b/w Phase A and B</Label>
-                            <Input type="number" name="verDisAB" id="verDisAB" placeholder="" onChange={handleChange} />
+                            <Input type="number" name="verDisAB" id="verDisAB" placeholder="in meters" onChange={handleChange} />
                         </FormGroup>
                         <FormGroup>
                             <Label for="verDisBC">Enter vertical distance b/w Phase B and C</Label>
-                            <Input type="number" name="verDisBC" id="verDisBC" placeholder="" onChange={handleChange} />
+                            <Input type="number" name="verDisBC" id="verDisBC" placeholder="in meters" onChange={handleChange} />
                         </FormGroup>
                         <FormGroup>
                             <Label for="verDisAC">Enter vertical distance b/w Phase A and C</Label>
-                            <Input type="number" name="verDisAC" id="verDisAC" placeholder="" onChange={handleChange} />
+                            <Input type="number" name="verDisAC" id="verDisAC" placeholder="in meters" onChange={handleChange} />
                         </FormGroup>
                         <FormGroup>
                             <Label for="distAC">Enter distance b/w phase A and adjacent conductor C-</Label>
-                            <Input type="number" name="distAC" id="distAC" placeholder="" onChange={handleChange} />
+                            <Input type="number" name="distAC" id="distAC" placeholder="in meters" onChange={handleChange} />
                         </FormGroup>
                         <FormGroup>
                             <Label for="distBB">Enter distance b/w phase B and adjacent conductor B-</Label>
-                            <Input type="number" name="distAC" id="distAC" placeholder="" onChange={handleChange} />
+                            <Input type="number" name="distAC" id="distAC" placeholder="in meters" onChange={handleChange} />
                         </FormGroup>
                         <FormGroup>
                             <Label for="distCA">Enter distance b/w phase C and adjacent conductor A-</Label>
-                            <Input type="number" name="distAC" id="distAC" placeholder="" onChange={handleChange} />
+                            <Input type="number" name="distAC" id="distAC" placeholder="in meters" onChange={handleChange} />
                         </FormGroup>
                         {initialValues.bundledD === 'Y' ? (
                             <>
                                 <FormGroup>
-                                    <Label for="noOfBunCon">Enter Number of bundled conductors</Label>
-                                    <Input type="number" name="noOfBunCon" id="noOfBunCon" placeholder="" onChange={handleChange} />
+                                    <Label for="noOfBunD">Enter Number of bundled conductors</Label>
+                                    <Input type="number" name="noOfBunD" id="noOfBunD" placeholder="e.g: 3" onChange={handleChange} />
                                 </FormGroup>
                                 <FormGroup>
                                     <Label for="spaBunCon">Enter spacing b/w the bundled conductors:</Label>
-                                    <Input type="number" name="spaBunCon" id="spaBunCon" placeholder="" onChange={handleChange} />
+                                    <Input type="number" name="spaBunCon" id="spaBunCon" placeholder="in meters" onChange={handleChange} />
                                 </FormGroup>
                             </>
                         ) : (null)}
                     </>
                 )}
                 <Button>Submit</Button>
+                <hr /><br />
 
             </Form>
             <div className="container">
                 {!isSubmit ? (null) : (<h2>Inductance Per Phase of Transmission Line : {inductance}</h2>)}
             </div>
+            <br />
+            <br />
+            <br />
         </div>
     )
 }
