@@ -6,10 +6,13 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+<<<<<<< HEAD
     "express": "^4.17.1",
     "express-openid-connect": "^2.0.0",
     "firebase": "^8.1.1",
     "mathjs": "^9.4.4",
+=======
+>>>>>>> 7ee481bcbf0d0db2c4b703c4e21692bc5909fa64
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-icons": "^3.11.0",
