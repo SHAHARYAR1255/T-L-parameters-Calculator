@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
-import { pow, sqrt, nthRoot } from 'mathjs';
 
 function Inductance() {
     const [isSubmit, setIsSubmit] = useState(false);
@@ -10,9 +9,9 @@ function Inductance() {
         phaseAC: 0, radius: 0, bundledS: "", bundledD: "", VerDisAB: 0, VerDisBC: 0, VerDisAC: 0,
         distAC: 0, distBB: 0, distCA: 0, noOfBunD: 0, distanceD: 0
     });
-    // var nthRoot = function (n, root) {
-    //     return Math.pow(n, 1 / root);
-    // };
+    var nthRoot = function (n, root) {
+        return Math.pow(n, 1 / root);
+    };
 
     // console.log(nthRoot(64, 4)) //2.82842712474619
     const handleReset = () => {
@@ -58,13 +57,13 @@ function Inductance() {
                         console.log('2')
                         let a = r * distanceS;
                         console.log(a, 'a');
-                        let b = pow(a, 2);
+                        let b = Math.pow(a, 2);
                         console.log(b, 'b');
                         Ds = nthRoot(b, 4);
                         console.log(Ds, 'Ds');
                         break;
-                    case '3': Ds = nthRoot(r * pow(distanceS, 2), 3); break;
-                    case '4': Ds = nthRoot(4 * (r * pow(distanceS, 3)), 16); break;
+                    case '3': Ds = nthRoot(r * Math.pow(distanceS, 2), 3); break;
+                    case '4': Ds = nthRoot(4 * (r * Math.pow(distanceS, 3)), 16); break;
                     default:
                         console.log('default Ds');
                         Ds = r
@@ -85,30 +84,30 @@ function Inductance() {
                 let Dsa;
 
                 switch (noOfBunD) {
-                    case '2': Dsa = sqrt(pow(r, 2)); break;
-                    case '3': Dsa = nthRoot(r * (pow(distanceD, 2)), 3); break;
-                    case '4': Dsa = 1.09 * nthRoot(r * (pow(distanceD, 3)), 4); break;
+                    case '2': Dsa = Math.sqrt(Math.pow(r, 2)); break;
+                    case '3': Dsa = nthRoot(r * (Math.pow(distanceD, 2)), 3); break;
+                    case '4': Dsa = 1.09 * nthRoot(r * (Math.pow(distanceD, 3)), 4); break;
                     default:
                         Dsa = 1;
                         break;
                 };
                 console.log(noOfBunD, 'Y', 'nofofBunD', Dsa, 'Dsa');
-                const Dsa1 = sqrt(Dsa * sqrt((pow(VerDisAC, 2) + pow(distAC, 2))))
+                const Dsa1 = Math.sqrt(Dsa * Math.sqrt((Math.pow(VerDisAC, 2) + Math.pow(distAC, 2))))
                 console.log(Dsa1, 'Dsa1')
                 const Dsa3 = Dsa1;
-                const Dsa2 = sqrt(Dsa * distBB);
+                const Dsa2 = Math.sqrt(Dsa * distBB);
                 console.log(Dsa2, 'Dsa2')
                 const Ds = nthRoot(Dsa1 * Dsa2 * Dsa3, 3);
                 console.log(Ds, 'Ds');
-                let cpe = pow(VerDisAB, 2);
+                let cpe = Math.pow(VerDisAB, 2);
                 console.log(VerDisAB, VerDisAC, VerDisBC, 'verdisab');
-                let d = pow(distAC, 2);
+                let d = Math.pow(distAC, 2);
                 console.log(cpe, d, 'cd')
-                const dab = nthRoot(((cpe) * (sqrt(d + cpe))), 4);
+                const dab = nthRoot(((cpe) * (Math.sqrt(d + cpe))), 4);
                 console.log(dab, 'dab');
-                const dbc = nthRoot((VerDisBC ** 2) * (sqrt((distBB ** 2) + (VerDisBC ** 2)) ** 2), 4);
+                const dbc = nthRoot((VerDisBC ** 2) * (Math.sqrt((distBB ** 2) + (VerDisBC ** 2)) ** 2), 4);
                 console.log(dbc, 'dbc');
-                const dac = nthRoot((VerDisAC ** 2) * (sqrt((distCA ** 2) + (VerDisAC ** 2)) ** 2), 4);
+                const dac = nthRoot((VerDisAC ** 2) * (Math.sqrt((distCA ** 2) + (VerDisAC ** 2)) ** 2), 4);
                 console.log(dac, 'dca');
                 const Dm = nthRoot(dab * dbc * dac, 3);
                 console.log(Dm, 'Dm');
@@ -120,13 +119,13 @@ function Inductance() {
             else {
                 if (distAC === distBB && distBB === distCA) {
                     console.log('distAC === distBB && distBB === distCA')
-                    let Dsa = sqrt(r * sqrt(Math.pow(VerDisAC, 2) + Math.pow(VerDisAC, 2)));
+                    let Dsa = Math.sqrt(r * Math.sqrt(Math.pow(VerDisAC, 2) + Math.pow(VerDisAC, 2)));
                     const Dsc = Dsa;
-                    const Dsb = sqrt(r * distBB);
+                    const Dsb = Math.sqrt(r * distBB);
                     const Ds = nthRoot(Dsa * Dsc * Dsb, 3);
-                    const dab = sqrt(VerDisAB * sqrt(Math.pow(VerDisAB, 2) + Math.pow(distBB, 2)))
+                    const dab = Math.sqrt(VerDisAB * Math.sqrt(Math.pow(VerDisAB, 2) + Math.pow(distBB, 2)))
                     const dbc = dab;
-                    const dac = sqrt(VerDisAC * distCA);
+                    const dac = Math.sqrt(VerDisAC * distCA);
                     const Dm = nthRoot(dab * dbc * dac, 3);
                     console.log(Dm, 'Dm');
                     let L = (2E-7) * Math.log(Dm / Ds);
@@ -137,9 +136,9 @@ function Inductance() {
                     const t = distCA - distAC;
                     const u = t / 2;
                     const v = distCA - u;
-                    const h = sqrt((v ** 2) + (VerDisAC ** 2));
-                    const Dsb = sqrt(r * distBB);
-                    const Dsa = sqrt(r * h);
+                    const h = Math.sqrt((v ** 2) + (VerDisAC ** 2));
+                    const Dsb = Math.sqrt(r * distBB);
+                    const Dsa = Math.sqrt(r * h);
                     const Dsc = Dsa;
                     const Ds = nthRoot(Dsa * Dsb * Dsc, 3);
                     const a = distBB - distAC;
@@ -147,10 +146,10 @@ function Inductance() {
                     const m = distBB - distCA
                     const n = m / 2;
 
-                    let hcb = sqrt((VerDisBC ** 2) + (n ** 2));
-                    let hcb_ = sqrt((VerDisBC ** 2) + Math.pow(distBB - n, 2));
-                    let hab = sqrt((VerDisAB ** 2) + Math.pow(a * 0.5, 2))
-                    let hab_ = sqrt((VerDisAB ** 2) + b ** 2)
+                    let hcb = Math.sqrt((VerDisBC ** 2) + (n ** 2));
+                    let hcb_ = Math.sqrt((VerDisBC ** 2) + Math.pow(distBB - n, 2));
+                    let hab = Math.sqrt((VerDisAB ** 2) + Math.pow(a * 0.5, 2))
+                    let hab_ = Math.sqrt((VerDisAB ** 2) + b ** 2)
 
                     const hc_b = hab_;
                     const hc_b_ = hab;
@@ -158,7 +157,7 @@ function Inductance() {
                     const ha_b_ = hcb;
 
                     const dab = nthRoot(hab * hab_ * ha_b * ha_b_, 4);
-                    const hac = sqrt((u ** 2) + VerDisAC ** 2);
+                    const hac = Math.sqrt((u ** 2) + VerDisAC ** 2);
                     const ha_c_ = hac;
                     const dac = nthRoot(distAC * hac * distCA * ha_c_, 4);
                     const dbc = nthRoot(hcb * hcb_ * hc_b * hc_b_, 4);
@@ -295,7 +294,7 @@ function Inductance() {
             </Form>
             <div className="container">
                 {!isSubmit ? (null) : (<><h2>Inductance Per Phase of Transmission Line : {inductance} H/m/phase</h2>
-                    <Button onClick={handleReset}>Reset</Button></>)}
+                    <Button onClick={handleReset}>Again</Button></>)}
 
             </div>
             <br />

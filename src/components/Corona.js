@@ -2,10 +2,13 @@ import React, { useState } from 'react'
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
 function Corona() {
-    const [initialValues, setInitialValues] = useState({ radius: "", distance: "", Barometric: "", temperature: "", phase: "" });
+    const [initialValues, setInitialValues] = useState({ radius: 0, distance: 0, Barometric: 0, temperature: 0, phase: 0 });
     const [isSubmit, setIsSubmit] = useState(false);
     const [Pc, setPc] = useState(0);
-
+    const handleReset = () =>{
+        setInitialValues({ radius: 0, distance: 0, Barometric: 0, temperature: 0, phase: 0 });
+        setIsSubmit(false)
+    }
     const handleChange = (e) => {
         setInitialValues({ ...initialValues, [e.target.name]: e.target.value });
         console.log('cahnging')
@@ -16,7 +19,7 @@ function Corona() {
     // }
 
     const handleSubmit = (e) => {
-        setIsSubmit(!isSubmit);
+        setIsSubmit(true);
         e.preventDefault();
         const { radius, distance, Barometric, temperature, phase } = initialValues;
         //surface factor for stranded conductors
@@ -69,10 +72,16 @@ function Corona() {
                     <Input type="number" name="phase" id="phase" placeholder="Enter the Phase voltage in KV of the transmission system:" onChange={handleChange} />
                 </FormGroup>
                 <Button>Submit</Button>
+                <hr /><br />
             </Form><br />
             <div className="container">
-                {!isSubmit ? (null) : (<h2>Corona power loss is : {Pc}</h2>)}
+                {!isSubmit ? (null) : (<><h2>Corona power loss is : {Pc} kW/km/phase</h2>
+                    <Button onClick={handleReset}>Again</Button>
+                </>)}
             </div>
+            <br />
+            <br />
+            <br />
         </div>
     )
 }
