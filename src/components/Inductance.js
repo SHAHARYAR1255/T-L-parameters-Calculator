@@ -200,7 +200,7 @@ function Inductance() {
                     initialValues.conductor === 'OTHER' ? (
                         <FormGroup>
                             <Label for="radius">Enter the radius in meters</Label>
-                            <Input type="number" name="radius" id="radius" placeholder="in meters" onChange={handleChange} />
+                            <Input type="float" name="radius" id="radius" placeholder="in meters" onChange={handleChange} />
                         </FormGroup>
                     ) : (null)
                 }
@@ -219,23 +219,23 @@ function Inductance() {
                             <>
                                 <FormGroup>
                                     <Label for="noOfBunS">Number of Bundles</Label>
-                                    <Input type="number" name="noOfBunS" id="noOfBunS" placeholder="e.g 3" onChange={handleChange} />
+                                    <Input type="float" name="noOfBunS" id="noOfBunS" placeholder="e.g 3" onChange={handleChange} />
                                 </FormGroup>
                                 <FormGroup>
                                     <Label for="distanceS">Distance b/w the bundled conductors</Label>
-                                    <Input type="number" name="distanceS" id="distanceS" placeholder="in meters" onChange={handleChange} />
+                                    <Input type="float" name="distanceS" id="distanceS" placeholder="in meters" onChange={handleChange} />
                                 </FormGroup>
                                 <FormGroup>
                                     <Label for="phaseAB">Enter distance b/w Phase A and B</Label>
-                                    <Input type="number" name="phaseAB" id="phaseAB" placeholder="in meters" onChange={handleChange} />
+                                    <Input type="float" name="phaseAB" id="phaseAB" placeholder="in meters" onChange={handleChange} />
                                 </FormGroup>
                                 <FormGroup>
                                     <Label for="phaseBC">Enter distance b/w Phase B and C</Label>
-                                    <Input type="number" name="phaseBC" id="phaseBC" placeholder="in meters" onChange={handleChange} />
+                                    <Input type="float" name="phaseBC" id="phaseBC" placeholder="in meters" onChange={handleChange} />
                                 </FormGroup>
                                 <FormGroup>
                                     <Label for="phaseAC">Enter distance b/w Phase A and C</Label>
-                                    <Input type="number" name="phaseAC" id="phaseAC" placeholder="in meters" onChange={handleChange} />
+                                    <Input type="float" name="phaseAC" id="phaseAC" placeholder="in meters" onChange={handleChange} />
                                 </FormGroup>
                             </>
                         ) : (null)}
@@ -252,37 +252,37 @@ function Inductance() {
                         </FormGroup>
                         <FormGroup>
                             <Label for="VerDisAB">Enter vertical distance b/w Phase A and B</Label>
-                            <Input type="number" name="VerDisAB" id="VerDisAB" placeholder="in meters" onChange={handleChange} />
+                            <Input type="float" name="VerDisAB" id="VerDisAB" placeholder="in meters" onChange={handleChange} />
                         </FormGroup>
                         <FormGroup>
                             <Label for="VerDisBC">Enter vertical distance b/w Phase B and C</Label>
-                            <Input type="number" name="VerDisBC" id="VerDisBC" placeholder="in meters" onChange={handleChange} />
+                            <Input type="float" name="VerDisBC" id="VerDisBC" placeholder="in meters" onChange={handleChange} />
                         </FormGroup>
                         <FormGroup>
                             <Label for="VerDisAC">Enter vertical distance b/w Phase A and C</Label>
-                            <Input type="number" name="VerDisAC" id="VerDisAC" placeholder="in meters" onChange={handleChange} />
+                            <Input type="float" name="VerDisAC" id="VerDisAC" placeholder="in meters" onChange={handleChange} />
                         </FormGroup>
                         <FormGroup>
                             <Label for="distAC">Enter distance b/w phase A and adjacent conductor C-</Label>
-                            <Input type="number" name="distAC" id="distAC" placeholder="in meters" onChange={handleChange} />
+                            <Input type="float" name="distAC" id="distAC" placeholder="in meters" onChange={handleChange} />
                         </FormGroup>
                         <FormGroup>
                             <Label for="distBB">Enter distance b/w phase B and adjacent conductor B-</Label>
-                            <Input type="number" name="distBB" id="distBB" placeholder="in meters" onChange={handleChange} />
+                            <Input type="float" name="distBB" id="distBB" placeholder="in meters" onChange={handleChange} />
                         </FormGroup>
                         <FormGroup>
                             <Label for="distCA">Enter distance b/w phase C and adjacent conductor A-</Label>
-                            <Input type="number" name="distCA" id="distCA" placeholder="in meters" onChange={handleChange} />
+                            <Input type="float" name="distCA" id="distCA" placeholder="in meters" onChange={handleChange} />
                         </FormGroup>
                         {initialValues.bundledD === 'Y' ? (
                             <>
                                 <FormGroup>
-                                    <Label for="noOfBunD">Enter Number of bundled conductors</Label>
-                                    <Input type="number" name="noOfBunD" id="noOfBunD" placeholder="e.g: 3" onChange={handleChange} />
+                                    <Label for="noOfBunD">Enter float of bundled conductors</Label>
+                                    <Input type="float" name="noOfBunD" id="noOfBunD" placeholder="e.g: 3" onChange={handleChange} />
                                 </FormGroup>
                                 <FormGroup>
                                     <Label for="distanceD">Enter spacing b/w the bundled conductors:</Label>
-                                    <Input type="number" name="distanceD" id="distanceD" placeholder="in meters" onChange={handleChange} />
+                                    <Input type="float" name="distanceD" id="distanceD" placeholder="in meters" onChange={handleChange} />
                                 </FormGroup>
                             </>
                         ) : (null)}

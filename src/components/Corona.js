@@ -34,7 +34,7 @@ function Corona() {
         console.log('Visual critical voltage', Vc)
         //for Pc power loss due to corona
 
-        let Pc = 242.2 * ((f + 25) / s) * Math.sqrt(radius / distance) * (phase - Vc) * (phase - Vc) * Math.pow(10, -5);
+        let Pc = 242.2 * ((f + 25) / s) * Math.sqrt(radius / distance) * Math.pow((phase - Vc),2) * Math.pow(10, -5);
         if (phase > Vc) {
             setPc(Pc);
             console.log(Pc, 'The power loss due to corona is %f kW/km/phase')
@@ -53,23 +53,23 @@ function Corona() {
             <Form onSubmit={(e) => handleSubmit(e)}>
                 <FormGroup>
                     <Label for="radius">Conductor Radius</Label>
-                    <Input type="number" name="radius" id="radius" placeholder="'Enter the Conuctor Radius in cm:" onChange={handleChange} />
+                    <Input type="float" name="radius" id="radius" placeholder="'Enter the Conuctor Radius in cm:" onChange={handleChange} />
                 </FormGroup>
                 <FormGroup>
                     <Label for="distance">Distance between conductor</Label>
-                    <Input type="number" name="distance" id="distance" placeholder="'Enter the Distance between the conductors in cm" onChange={handleChange} />
+                    <Input type="float" name="distance" id="distance" placeholder="'Enter the Distance between the conductors in cm" onChange={handleChange} />
                 </FormGroup>
                 <FormGroup>
                     <Label for="Barometric">Barometric Pressure:</Label>
-                    <Input type="number" name="Barometric" id="Barometric" placeholder="Barometric Pressure:" onChange={handleChange} />
+                    <Input type="float" name="Barometric" id="Barometric" placeholder="Barometric Pressure:" onChange={handleChange} />
                 </FormGroup>
                 <FormGroup>
                     <Label for="temperature">Temperature of the surrounding</Label>
-                    <Input type="number" name="temperature" id="temperature" placeholder="Enter the Temperature of the surrounding in Celsius" onChange={handleChange} />
+                    <Input type="float" name="temperature" id="temperature" placeholder="Enter the Temperature of the surrounding in Celsius" onChange={handleChange} />
                 </FormGroup>
                 <FormGroup>
                     <Label for="phase">phase voltage</Label>
-                    <Input type="number" name="phase" id="phase" placeholder="Enter the Phase voltage in KV of the transmission system:" onChange={handleChange} />
+                    <Input type="float" name="phase" id="phase" placeholder="Enter the Phase voltage in KV of the transmission system:" onChange={handleChange} />
                 </FormGroup>
                 <Button>Submit</Button>
                 <hr /><br />
