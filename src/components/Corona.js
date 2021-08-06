@@ -80,7 +80,7 @@ function Corona() {
                 <hr /><br />
             </Form><br />
             <div className="container">
-                {!isSubmit ? (null) : (<><h2>Corona power loss is : {Pc} kW/km/phase</h2><h2>Visual critical voltage is : {criticalVoltage}} kW/km/phase</h2>
+                {!isSubmit ? (null) : (<><h2>Corona power loss is : {Pc} kW/km/phase</h2><h2>Visual critical voltage is : {criticalVoltage} kW/km/phase</h2>
                     <Button onClick={handleReset}>Again</Button>
                 </>)}
             </div>
