@@ -5,9 +5,12 @@ function Corona() {
     const [initialValues, setInitialValues] = useState({ radius: 0, distance: 0, Barometric: 0, temperature: 0, phase: 0 });
     const [isSubmit, setIsSubmit] = useState(false);
     const [Pc, setPc] = useState(0);
+    const [criticalVoltage, setCriticalVoltage] = useState(0);
     const handleReset = () =>{
         setInitialValues({ radius: 0, distance: 0, Barometric: 0, temperature: 0, phase: 0 });
-        setIsSubmit(false)
+        setIsSubmit(false);
+        setPc(0);
+        setCriticalVoltage(0)
     }
     const handleChange = (e) => {
         setInitialValues({ ...initialValues, [e.target.name]: e.target.value });
@@ -30,8 +33,10 @@ function Corona() {
         const s = (3.92 * Barometric) / (273 + temperature);
         const f = 50;
 
-        const Vc = m * g * s * radius * Math.log(distance / radius);
-        console.log('Visual critical voltage', Vc)
+        const Vc = m * g * s * radius * Math.log(distance / radius)*100;
+        // const Vc = 21E-6 * f*phase*phase*m / Math.pow(Math.log(distance/radius), 2)
+        console.log('Visual critical voltage', Vc);
+        setCriticalVoltage(Vc);
         //for Pc power loss due to corona
 
         let Pc = 242.2 * ((f + 25) / s) * Math.sqrt(radius / distance) * Math.pow((phase - Vc),2) * Math.pow(10, -5);
@@ -75,7 +80,7 @@ function Corona() {
                 <hr /><br />
             </Form><br />
             <div className="container">
-                {!isSubmit ? (null) : (<><h2>Corona power loss is : {Pc} kW/km/phase</h2>
+                {!isSubmit ? (null) : (<><h2>Corona power loss is : {Pc} kW/km/phase</h2><h2>Visual critical voltage is : {criticalVoltage}} kW/km/phase</h2>
                     <Button onClick={handleReset}>Again</Button>
                 </>)}
             </div>
