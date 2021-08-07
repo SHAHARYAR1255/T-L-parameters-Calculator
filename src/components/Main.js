@@ -108,7 +108,7 @@ function Main() {
             <div className="container">
                 {!isSubmit ? (null) : (<>
                     <h2>Calculated total Weight is : {totalWeight} Kg</h2>
-                    <h2>Calculated sag is : {Sag} Kg</h2>
+                    <h2>Calculated sag is : {Sag} meters</h2>
                 <h2>Calculated Vertical Sag is : {VSag} meters</h2>
                     <Button onClick={handleReset}>Again</Button>
                 </>)}

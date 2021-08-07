@@ -44,7 +44,7 @@ function Corona() {
         setCriticalVoltage(Vc);
         //for Pc power loss due to corona
 
-        let Pc = 242.2 * ((f + 25) / s) * Math.sqrt(radius / distance) * Math.pow((phase - Vc),2) * Math.pow(10, -5);
+        let Pc = 242.2 * ((f + 25) / s) * Math.sqrt(radius / distance) * Math.pow((parseInt(phase) - Vc),2) * Math.pow(10, -5);
         if (phase > Vc) {
             setPc(Pc);
             console.log(Pc, 'The power loss due to corona is %f kW/km/phase')
