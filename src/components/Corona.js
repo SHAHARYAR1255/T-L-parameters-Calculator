@@ -30,10 +30,15 @@ function Corona() {
         //21.21 % KV/cm rms
         const g = 21.21;
         //Air density
-        const s = (3.92 * Barometric) / (273 + temperature);
+        const s1 = (3.92 * Barometric);
+        console.log(s1, 's1')
+        const s2 = 273 + parseInt(temperature);
+        console.log(s2, 's2')
+        const s = s1/ s2 
+        console.log(s, 's');
         const f = 50;
-
-        const Vc = m * g * s * radius * Math.log(distance / radius)*100;
+        console.log(initialValues, 'initialValues')
+        const Vc = m * g * s * radius * Math.log(distance / radius);
         // const Vc = 21E-6 * f*phase*phase*m / Math.pow(Math.log(distance/radius), 2)
         console.log('Visual critical voltage', Vc);
         setCriticalVoltage(Vc);
@@ -80,7 +85,7 @@ function Corona() {
                 <hr /><br />
             </Form><br />
             <div className="container">
-                {!isSubmit ? (null) : (<><h2>Corona power loss is : {Pc} kW/km/phase</h2><h2>Visual critical voltage is : {criticalVoltage} kW/km/phase</h2>
+                {!isSubmit ? (null) : (<><h2>Visual critical voltage is : {criticalVoltage} kV/phase</h2><h2>Corona power loss is : {Pc} kW/km/phase</h2>
                     <Button onClick={handleReset}>Again</Button>
                 </>)}
             </div>
