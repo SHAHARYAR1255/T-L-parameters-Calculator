@@ -2,21 +2,26 @@ import React, { useState } from 'react'
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
 function Main() {
-    const [initialValues, setInitialValues] = useState({ length: 0, pressure: 0, conductor: "", weight: 0 , tension: 0 });
+    const [initialValues, setInitialValues] = useState({ length: 0, pressure: 0, conductor: "", weight: 0, tension: 0 });
     const [isSubmit, setIsSubmit] = useState(false);
     const [Sag, setSag] = useState(0);
-    const [VSag, setVSag] = useState(0);
+    // const [VSag, setVSag] = useState(0);
     const [totalWeight, settotalWeight] = useState(0);
     const handleReset = () => {
         setIsSubmit(false);
-        setInitialValues({ length: 0, pressure: 0, conductor: "", weight: 0 , tension: 0 })
+        setInitialValues({ length: 0, pressure: 0, conductor: "", weight: 0, tension: 0 })
     }
     // const handleDisable = () =>
     const handleSubmit = (e) => {
-        setIsSubmit(!isSubmit);
+        setIsSubmit(true);
         e.preventDefault();
         console.log(initialValues);
         const Findwt = () => {
+            if (initialValues.conductor === "") {
+                const w = 0;
+                const t = 0;
+                return [w, t];
+            }
             if (initialValues.conductor === 'RAIL') {
                 const w = 1.604;
                 const t = 2902.5;
@@ -41,23 +46,37 @@ function Main() {
         };
         const [w, t] = Findwt();
         console.log(w, t, 'w & t');
-        const a = 8.3;
+        const a = 8.3 * w;
+        console.log(a, 'a');
         //Total weight
         const Wt = Math.sqrt((w * w) + (initialValues.pressure * initialValues.pressure))
         console.log(Wt, 'total weight');
         settotalWeight(Wt);
-        const sag = (Wt * initialValues.length  *initialValues.length) / (8 * t);
+        const sag = (Wt * initialValues.length * initialValues.length) / (8 * t);
         console.log(sag, 'sag');
-        setSag(sag);
-        const x = initialValues.pressure / w;
+        if (sag === Infinity) {
+            setSag('check the input fields');
+            return;
+        } else {
+            setSag(sag);
+            const x = initialValues.pressure / w;
+            console.log(x, 'x');
+            function getTanFromDegrees(degrees) {
+                return Math.tan(degrees * Math.PI / 180);
+            }
+            //   function getCosFromDegrees(degrees) {
+            //     return Math.cos(degrees * Math.PI / 180);
+            //   }
+            let ta = getTanFromDegrees(parseInt(x));
+            console.log(ta, 'ta');
+            const theta = (a) * ta;
+            console.log(theta, 'theta');
+            //vertical sag
+            // const Vsag = sag * getCosFromDegrees(theta);
 
-        const theta = a * Math.tan(x);
-        console.log(theta, 'theta');
-        //vertical sag
-        const Vsag = sag * Math.cos(theta);
-
-        // alert(Vsag, 'vsag');
-        setVSag(Vsag);
+            // alert(Vsag, 'vsag');
+            // setVSag(Vsag);
+        }
     };
 
     const handleChange = (e) => {
@@ -109,7 +128,7 @@ function Main() {
                 {!isSubmit ? (null) : (<>
                     <h2>Calculated total Weight is : {totalWeight} Kg</h2>
                     <h2>Calculated sag is : {Sag} meters</h2>
-                <h2>Calculated Vertical Sag is : {VSag} meters</h2>
+                    {/* <h2>Calculated Vertical Sag is : {VSag} meters</h2> */}
                     <Button onClick={handleReset}>Again</Button>
                 </>)}
             </div>
